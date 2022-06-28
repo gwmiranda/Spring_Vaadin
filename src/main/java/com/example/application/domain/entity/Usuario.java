@@ -5,8 +5,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "usuarios")
@@ -20,10 +21,7 @@ public class Usuario implements UserDetails {
     private String login;
     @Column(name = "senha")
     private String senha;
-
     private String authorities;
-
-    private String role;
 
     public Usuario() {
     }
@@ -31,6 +29,13 @@ public class Usuario implements UserDetails {
     public Usuario(String username, String senha) {
         this.login = username;
         this.senha = senha;
+    }
+
+    public Usuario(Long id, String login, String senha, String authorities) {
+        this.id = id;
+        this.login = login;
+        this.senha = senha;
+        this.authorities = authorities;
     }
 
     public Long getId() {
@@ -57,12 +62,8 @@ public class Usuario implements UserDetails {
         this.senha = senha;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthorities(String authorities) {
+        this.authorities = authorities;
     }
 
     @Override
@@ -76,7 +77,9 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return Arrays.stream(authorities.split(","))
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
     }
 
     @Override
