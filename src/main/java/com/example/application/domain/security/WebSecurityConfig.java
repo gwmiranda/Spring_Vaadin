@@ -27,12 +27,6 @@ public class WebSecurityConfig extends VaadinWebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-        auth.inMemoryAuthentication()
-                .withUser("user")
-                .password("{noop}user")
-                .roles("USER");
-
         auth.userDetailsService(usuarioService).passwordEncoder(passwordEncoder);
     }
 }

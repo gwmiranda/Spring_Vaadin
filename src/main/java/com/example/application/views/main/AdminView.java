@@ -12,7 +12,7 @@ import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Admin")
 @Route(value = "admin")
-@RolesAllowed("ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class AdminView extends HorizontalLayout {
 
     private TextField name;
@@ -25,7 +25,7 @@ public class AdminView extends HorizontalLayout {
         sayHello.addClickShortcut(Key.ENTER);
 
         setMargin(true);
-        setVerticalComponentAlignment(Alignment.END, name, sayHello);
+        setVerticalComponentAlignment(Alignment.CENTER, name, sayHello);
 
         add(name, sayHello);
     }

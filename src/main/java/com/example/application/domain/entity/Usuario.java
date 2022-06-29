@@ -2,7 +2,6 @@ package com.example.application.domain.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario implements UserDetails {
+public class Usuario{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,16 +65,6 @@ public class Usuario implements UserDetails {
         this.authorities = authorities;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-            "id=" + id +
-            ", login='" + login + '\'' +
-            ", senha='" + senha + '\'' +
-            '}';
-    }
-
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.stream(authorities.split(","))
             .map(SimpleGrantedAuthority::new)
@@ -83,32 +72,11 @@ public class Usuario implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return this.senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.login;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public String toString() {
+        return "Usuario{" +
+            "id=" + id +
+            ", login='" + login + '\'' +
+            ", senha='" + senha + '\'' +
+            '}';
     }
 }

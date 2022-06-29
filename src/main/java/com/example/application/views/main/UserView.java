@@ -21,7 +21,7 @@ import javax.annotation.security.RolesAllowed;
 
 @PageTitle("User")
 @Route(value = "user")
-@RolesAllowed("USER")
+@RolesAllowed("ROLE_USER")
 public class UserView extends HorizontalLayout {
 
     private TextField name;

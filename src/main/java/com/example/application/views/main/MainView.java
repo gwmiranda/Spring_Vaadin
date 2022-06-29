@@ -1,5 +1,6 @@
 package com.example.application.views.main;
 
+import com.example.application.domain.security.SecurityService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -16,15 +17,22 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import org.apache.poi.ss.formula.functions.T;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import java.util.Arrays;
 
 @PageTitle("Main")
 @Route(value = "")
-@RolesAllowed({"USER", "ADMIN"})
+@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
 public class MainView extends AppLayout {
+    private SecurityService securityService;
 
-    public MainView() {
+    public MainView(@Autowired SecurityService securityService) {
+        this.securityService = securityService;
+
         setPrimarySection(Section.DRAWER);
         var toggle = new DrawerToggle();
 
@@ -37,10 +45,14 @@ public class MainView extends AppLayout {
 
     private Tabs getTabs() {
         var tabs = new Tabs();
-        tabs.add(
-            createTab(VaadinIcon.DASHBOARD, "Say Hellow", UserView.class),
-            createTab(VaadinIcon.CART, "Cadastrar", AdminView.class)
-        );
+
+        if(isPermitido("ROLE_USER")) {
+            tabs.add(createTab(VaadinIcon.USERS, "Tela do usuario", UserView.class));
+        }
+        if(isPermitido("ROLE_ADMIN")) {
+            tabs.add(createTab(VaadinIcon.USER_STAR, "Tela do adm", AdminView.class));
+        }
+
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         return tabs;
     }
@@ -54,5 +66,10 @@ public class MainView extends AppLayout {
         link.setTabIndex(-1);
 
         return new Tab(link);
+    }
+
+    private boolean isPermitido(String role) {
+        return securityService.getAuthenticatedUser().getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(role));
     }
 }
