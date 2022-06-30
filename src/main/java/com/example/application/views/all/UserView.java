@@ -1,4 +1,4 @@
-package com.example.application.views.main;
+package com.example.application.views.all;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.applayout.AppLayout;

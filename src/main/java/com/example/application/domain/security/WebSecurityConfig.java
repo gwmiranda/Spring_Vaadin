@@ -1,7 +1,7 @@
 package com.example.application.domain.security;
 
 import com.example.application.domain.service.UsuarioService;
-import com.example.application.views.main.LoginView;
+import com.example.application.views.all.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +20,11 @@ public class WebSecurityConfig extends VaadinWebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/api/**")
+                .permitAll();
+
         super.configure(http);
         setLoginView(http, LoginView.class, "/logout");
     }

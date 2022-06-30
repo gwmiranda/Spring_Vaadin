@@ -1,32 +1,21 @@
-package com.example.application.views.main;
+package com.example.application.views.all;
 
-import com.example.application.domain.service.UsuarioService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.security.PermitAll;
 
 @PageTitle("Login")
 @Route("login")
 @AnonymousAllowed
 public class LoginView extends HorizontalLayout {
 
-    @Autowired
-    private UsuarioService usuarioService;
-
     private LoginOverlay loginOverlay;
 
     public LoginView() {
-//        var login = new LoginForm();
-//        login.setAction("login");
-//        add(login);
-
         var login = getLoginOverlay();
         add(login);
     }
@@ -39,7 +28,6 @@ public class LoginView extends HorizontalLayout {
         i18nForm.setUsername("Login");
         i18nForm.setPassword("Senha");
         i18nForm.setSubmit("Entrar");
-        i18nForm.setForgotPassword("Cadastrar usuário");
         i18n.setForm(i18nForm);
 
         LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
@@ -50,10 +38,10 @@ public class LoginView extends HorizontalLayout {
         loginOverlay = new LoginOverlay();
         loginOverlay.setI18n(i18n);
         loginOverlay.setAction("login");
-        loginOverlay.addForgotPasswordListener(e -> Notification.show("Cadastrar usuário"));
-        verificarURL();
-
+        loginOverlay.setForgotPasswordButtonVisible(false);
         loginOverlay.setOpened(true);
+
+        verificarURL();
 
         return loginOverlay;
     }

@@ -1,28 +1,23 @@
 package com.example.application.views.main;
 
 import com.example.application.domain.security.SecurityService;
+import com.example.application.views.all.AdminView;
+import com.example.application.views.all.UserView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import java.util.Arrays;
 
 @PageTitle("Main")
 @Route(value = "")
@@ -33,14 +28,16 @@ public class MainView extends AppLayout {
     public MainView(@Autowired SecurityService securityService) {
         this.securityService = securityService;
 
-        setPrimarySection(Section.DRAWER);
         var toggle = new DrawerToggle();
 
         var title = new H2("OP's");
         var tabs = getTabs();
+        var button = new Button("Logout", e -> securityService.logout());
+
+        button.setIcon(VaadinIcon.EXIT.create());
 
         addToDrawer(tabs);
-        addToNavbar(true, toggle, title);
+        addToNavbar(false, toggle, title, button);
     }
 
     private Tabs getTabs() {

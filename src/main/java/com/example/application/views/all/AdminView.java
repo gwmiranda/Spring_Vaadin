@@ -1,4 +1,4 @@
-package com.example.application.views.main;
+package com.example.application.views.all;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -25,7 +25,7 @@ public class AdminView extends HorizontalLayout {
         sayHello.addClickShortcut(Key.ENTER);
 
         setMargin(true);
-        setVerticalComponentAlignment(Alignment.CENTER, name, sayHello);
+        setVerticalComponentAlignment(Alignment.END, name, sayHello);
 
         add(name, sayHello);
     }
